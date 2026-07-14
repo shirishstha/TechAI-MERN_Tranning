@@ -44,6 +44,18 @@ function App() {
     setMovies(data.results);
   }
 
+  const filterMovies = () => {
+    console.log("hello");
+    const result = movies.filter(movie => movie.vote_average >= 7);
+    setMovies(result);
+  }
+
+  const findMovie = () => {
+      const searchResult = movies.find(movie => movie.title === search);
+      setMovies([searchResult]);
+  }
+
+
   return (
     <>
       <div className="h-full bg-olive-50">
@@ -53,13 +65,21 @@ function App() {
           {movies.map(movie => (
             <MovieCard
               name={movie.title}
-              rating={movie.vote_count}
+              rating={movie.vote_average}
               description={movie.overview}
-              link={movie.poster_path}
+              link={movie.poster_path}  
             />
           ))}
         </div>
-        <button onClick={() =>getMovies()}>Get movies</button>
+        <button onClick={() => getMovies()}>Get movies</button>
+        <button onClick={(e) => filterMovies(e)}>Filter movies by rating</button>
+        <div>
+          <input
+            type="text"
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <button onClick={()=>findMovie()}>Search</button>
+        </div>
         {/* <h2 className="text-2xl">Count:{count}</h2>
         <button className="text-2xl p-2 shadow hover:cursor-pointer" onClick={() => setCount(count + 1)}>Increment</button>
         <button className="text-2xl p-2 shadow hover:cursor-pointer" onClick={() => setCount(count - 1)}>Decrement</button>
