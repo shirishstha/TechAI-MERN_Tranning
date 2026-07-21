@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Footer from "./components/Footer.jsx"
 import MovieCard from "./components/MovieCard.jsx"
 import NavigationBar from "./components/NavigationBar.jsx"
@@ -50,10 +50,18 @@ function App() {
     setMovies(result);
   }
 
-  const findMovie = () => {
-      const searchResult = movies.find(movie => movie.title === search);
-      setMovies([searchResult]);
+  const findMovie = async () => {
+    if (search.trim() === "") {
+      return;
+    }
+    const res = await fetch(`https://api.themoviedb.org/3/search/movie?query=${search}`, options);
+    const data = await res.json();
+    setMovies(data.results);
   }
+
+  useEffect(() => {
+    getMovies();
+  }, []);
 
 
   return (
@@ -61,25 +69,32 @@ function App() {
       <div className="h-full bg-olive-50">
 
         <NavigationBar />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 ">
-          {movies.map(movie => (
-            <MovieCard
-              name={movie.title}
-              rating={movie.vote_average}
-              description={movie.overview}
-              link={movie.poster_path}  
-            />
-          ))}
-        </div>
-        <button onClick={() => getMovies()}>Get movies</button>
-        <button onClick={(e) => filterMovies(e)}>Filter movies by rating</button>
         <div>
           <input
             type="text"
             onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                findMovie();
+              }
+            }}
           />
-          <button onClick={()=>findMovie()}>Search</button>
+          <button onClick={() => findMovie()}>Search</button>
         </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 ">
+          {movies.length > 0 ? movies.map(movie => (
+            <MovieCard
+              name={movie.title}
+              rating={movie.vote_average}
+              description={movie.overview}
+              link={movie.poster_path}
+            />
+          ))
+            : search && <h1>Loading...</h1>}
+        </div>
+        <button onClick={() => getMovies()}>Get movies</button>
+        <button onClick={(e) => filterMovies(e)}>Filter movies by rating</button>
+
         {/* <h2 className="text-2xl">Count:{count}</h2>
         <button className="text-2xl p-2 shadow hover:cursor-pointer" onClick={() => setCount(count + 1)}>Increment</button>
         <button className="text-2xl p-2 shadow hover:cursor-pointer" onClick={() => setCount(count - 1)}>Decrement</button>

@@ -1,7 +1,6 @@
 import React from 'react'
 
 const MovieCard = ({ name, rating, description, link }) => {
-    console.log("Link",link);
     return (
         <div className='shadow-lg max-w-sm'>
             <img src={`https://image.tmdb.org/t/p/w500${link}`} className='aspect-video object-cover
