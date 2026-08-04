@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const NavigationBar = () => {
     return (
@@ -14,7 +15,7 @@ const NavigationBar = () => {
                 <button >Search</button>
             </div>
             <nav className='flex justify-center gap-12 '>
-                <span className='hover:underline underline-offset-5 hover:text-rose-700'>Home</span>
+                <span className='hover:underline underline-offset-5 hover:text-rose-700'><Link to="/about">Home</Link> </span>
                 <span className='hover:underline underline-offset-5 hover:text-rose-700'>About Us</span>
                 <span className='hover:underline underline-offset-5 hover:text-rose-700'>Trending</span>
             </nav>

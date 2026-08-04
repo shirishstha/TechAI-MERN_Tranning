@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import Footer from "../components/Footer.jsx"
 import MovieCard from "../components/MovieCard.jsx"
 import NavigationBar from "../components/NavigationBar.jsx"
+import { Link } from "react-router-dom";
 
 function Home() {
   const [movies, setMovies] = useState([]);
@@ -46,12 +47,12 @@ function Home() {
 
   return (
     <>
-      <div className="h-full ">
+      <div className="h-full bg-gray-950 text-gray-300">
 
         <NavigationBar />
         <div className="relative max-h-screen">
-          <div className="absolute inset-0 opacity-50 bg-black bg-radial"/>
-          <img src="/lady.jpg"  alt="" className="max-h-screen w-full object-cover" />
+          <div className="absolute inset-0 opacity-50 bg-black bg-radial" />
+          <img src="/lady.jpg" alt="" className="max-h-screen w-full object-cover" />
           <div className="absolute top-2/5 left-10 w-md flex flex-col gap-2">
             <h1 className="text-5xl font-semibold">Find Your Best Movies</h1>
             <p className="">You can search numerous movies as per your choice and give the rating for that specific movie</p>
@@ -60,12 +61,14 @@ function Home() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-4">
           {movies.length > 0 ? movies.map(movie => (
-            <MovieCard
-              name={movie.title}
-              rating={movie.vote_average}
-              description={movie.overview}
-              link={movie.poster_path}
-            />
+            <Link to={`/movie/${movie.id}`}>
+              <MovieCard
+                name={movie.title}
+                rating={movie.vote_average}
+                description={movie.overview}
+                link={movie.poster_path}
+              />
+            </Link>
           ))
             : search && <h1>Loading...</h1>}
         </div>
