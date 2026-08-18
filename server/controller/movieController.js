@@ -1,7 +1,9 @@
+import Movie from '../models/movieModel.js'
+
 export const getMovies = (req, res) => {
     res.json({
         success: true,
-        message:'Movies fetched successfully'
+        message: 'Movies fetched successfully'
     })
 }
 
@@ -10,14 +12,18 @@ export const getAMovieWithId = (req, res) => {
     res.json({
         success: true,
         message: 'Movie fetched successfully',
-        data: {id}
+        data: { id }
     })
 }
 
-export const createMovie = (req, res) => {
-    const { name, publishedYear, description } = req.body();
+export const createMovie = async (req, res) => {
+    const { name, publishedYear, description } = req.body;
     //code to send in database
-
+    const movie = await Movie.create({
+        name,
+        publishedYear,
+        description
+    })
     res.json({
         success: true,
         message: 'Movie created Successfully'

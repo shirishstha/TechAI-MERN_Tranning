@@ -2,6 +2,7 @@ const express = require("express");
 const env = require('dotenv');
 const { getMovies, createMovie, getAMovieWithId, updateMovieById, deleteMovieById } = require("./controller/movieController");
 const movieRoutes = require("./routes/movieRoutes");
+const connectDB = require("./utils/db");
 
 
 env.config();
@@ -9,6 +10,7 @@ const app = express();
 const Router = express.Router();
 
 app.use(express.json());
+connectDB();
 
 
 app.get('/', (req, res) => {
