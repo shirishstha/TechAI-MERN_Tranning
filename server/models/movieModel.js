@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { type } = require('node:os');
 
 const movieSchema = new mongoose.Schema(
     {

@@ -1,13 +1,12 @@
 const express = require("express");
 const env = require('dotenv');
-const { getMovies, createMovie, getAMovieWithId, updateMovieById, deleteMovieById } = require("./controller/movieController");
 const movieRoutes = require("./routes/movieRoutes");
+const userRoutes = require("./routes/userRoutes")
 const connectDB = require("./utils/db");
 
 
 env.config();
 const app = express();
-const Router = express.Router();
 
 app.use(express.json());
 connectDB();
@@ -18,8 +17,9 @@ app.get('/', (req, res) => {
 })
 
 //movie routes
-app.get('/movies', getMovies);
+// app.get('/movies', getMovies);
 app.use('/movie', movieRoutes);
+app.use('/user',userRoutes);
 
 
 const PORT = process.env.PORT;

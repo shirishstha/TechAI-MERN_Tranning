@@ -7,21 +7,29 @@ export const getMovies = (req, res) => {
     })
 }
 
-export const getAMovieWithId = (req, res) => {
+export const getAMovieWithId = async (req, res) => {
     const id = req.params;
+    const movie = await Movie.findById(id);
+    if (!movie) {
+        res.json({
+            success: false,
+            message: 'There is no such movie with that id'
+        })
+    }
+
     res.json({
         success: true,
         message: 'Movie fetched successfully',
-        data: { id }
+        data: movie
     })
 }
 
 export const createMovie = async (req, res) => {
-    const { name, publishedYear, description } = req.body;
+    const { name, rating, description } = req.body;
     //code to send in database
     const movie = await Movie.create({
-        name,
-        publishedYear,
+        title: name,
+        rating,
         description
     })
     res.json({
@@ -30,9 +38,25 @@ export const createMovie = async (req, res) => {
     })
 }
 
-export const updateMovieById = (req, res) => {
+export const updateMovieById = async (req, res) => {
     const id = req.params.id;
     //code to update movie
+    const movie = await Movie.findById(id);
+    if (!movie) {
+        res.json({
+            success: false,
+            message: 'There is no such movie with that id'
+        })
+    }
+
+    const { title, description, rating } = req.body
+    // data validation
+
+    const result = await Movie.findByIdAndUpdate(id, {
+        title,
+        description,
+        rating
+    });
 
 
     res.json({
@@ -41,9 +65,19 @@ export const updateMovieById = (req, res) => {
     })
 }
 
-export const deleteMovieById = (req, res) => {
+export const deleteMovieById = async (req, res) => {
+    
     const id = req.params.id;
     // code to delete movie 
+    const movie = await Movie.findById(id);
+    if (!movie) {
+        res.json({
+            success: false,
+            message: 'There is no such movie with that id'
+        })
+    }
+
+    const result = await Movie.findByIdAndDelete(id);
 
     res.json({
         success: true,
