@@ -1,7 +1,8 @@
 const express = require("express");
 const env = require('dotenv');
 const movieRoutes = require("./routes/movieRoutes");
-const userRoutes = require("./routes/userRoutes")
+const userRoutes = require("./routes/userRoutes");
+const reviewRoutes = require("./routes/reviewRoutes");
 const connectDB = require("./utils/db");
 
 
@@ -20,6 +21,7 @@ app.get('/', (req, res) => {
 // app.get('/movies', getMovies);
 app.use('/movie', movieRoutes);
 app.use('/user',userRoutes);
+app.use('/review',reviewRoutes);
 
 
 const PORT = process.env.PORT;
