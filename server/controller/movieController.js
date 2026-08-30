@@ -8,7 +8,7 @@ export const getMovies = (req, res) => {
 }
 
 export const getAMovieWithId = async (req, res) => {
-    const id = req.params;
+    const id = req.params.id;
     const movie = await Movie.findById(id);
     if (!movie) {
         res.json({

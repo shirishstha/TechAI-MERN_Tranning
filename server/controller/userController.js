@@ -1,16 +1,25 @@
 import User from '../models/userModel.js'
-import { hashPassword } from '../utils/hash.js';
+import JWT from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 
 export const createUser = async (req, res) => {
     //code to register or create user
     const { email, password, username } = req.body;
     if (!email || !password || !username) {
-       return res.send({
+        return res.send({
             success: false,
             message: 'All fields must be filled properly'
         })
     }
+    //validation for security
+    //email regex
+    // const regex = `$/[a-z][0-9]+@+gmail+/.+com`
+    // if(!regex.match(password)){
+    //     res.send({
+    //         success:false,
+    //         message:'You can only use gmail.com'
+    //     })
+    // }
 
     const existingUser = await User.find({ email });
     if (existingUser) {
@@ -32,7 +41,7 @@ export const createUser = async (req, res) => {
 
 
     if (!user) {
-       return res.send({
+        return res.send({
             success: false,
             message: 'Couldnot register the user.'
         })
@@ -59,7 +68,7 @@ export const getUser = async (req, res) => {
     //validate if user exists or not
     const user = await User.findOne({ email });
     if (!user) {
-       return res.json({
+        return res.json({
             success: false,
             message: 'There is no user registered with this email'
         })
@@ -67,15 +76,25 @@ export const getUser = async (req, res) => {
 
     //validate if password match with email or not
     const valid = await bcrypt.compare(password, user.password);
-    if(!valid){
+    if (!valid) {
         return res.send({
-            success:false,
-            message:'Your creditials didnot matched'
+            success: false,
+            message: 'Your creditials didnot matched'
         })
     }
 
+    //generate jwt token
+    const token = JWT.sign(
+        {
+            userId: user._id
+        },
+        process.env.JWT_SECRETE,
+        
+    );
+
     res.json({
         success: true,
-        message: 'Login successfull'
+        message: 'Login successfull',
+        token
     })
 }

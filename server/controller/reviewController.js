@@ -17,65 +17,71 @@ export const getAReviewWithId = async (req, res) => {
     })
 }
 
-export const createMovie = async (req, res) => {
-    const { name, rating, description } = req.body;
+export const createReview = async (req, res) => {
+    const { comment,rating, user, movie} = req.body;
+    if(!comment|| !rating || !user || !movie){
+        return res.send({
+            success:false,
+            message:'All fields must be filled properly.'
+        })
+    }
     //code to send in database
-    const movie = await Movie.create({
-        title: name,
-        rating,
-        description
-    })
+   const review = await Review.create({
+    comment,
+    rating,
+    user,
+    movie
+   })
+
     res.json({
         success: true,
-        message: 'Movie created Successfully'
+        message: 'Movie created Successfully',
+        data:review
     })
 }
 
-export const updateMovieById = async (req, res) => {
+export const updateReviewById = async (req, res) => {
     const id = req.params.id;
     //code to update movie
-    const movie = await Movie.findById(id);
-    if (!movie) {
+    const review = await Review.findById(id);
+    if (!review) {
         res.json({
             success: false,
-            message: 'There is no such movie with that id'
+            message: 'There is no such review with that id'
         })
     }
 
-    const { title, description, rating } = req.body
+     const { comment,rating} = req.body;
     // data validation
 
-    const result = await Movie.findByIdAndUpdate(id, {
-        title,
-        description,
-        rating
+    const result = await Review.findByIdAndUpdate(id, {
+        comment,
+        rating,
     });
-
 
     res.json({
         success: true,
-        message: `Movie with ${id} has been updated.`
+        message: `Review has been updated successfully.`
     })
 }
 
-export const deleteMovieById = async (req, res) => {
+export const deleteReviewById = async (req, res) => {
     
     const id = req.params.id;
     // code to delete movie 
-    const movie = await Movie.findById(id);
-    if (!movie) {
+    const review = await Review.findById(id);
+    if (!review) {
         res.json({
             success: false,
-            message: 'There is no such movie with that id'
+            message: 'There is no such review with that id'
         })
     }
 
-    const result = await Movie.findByIdAndDelete(id);
+    const result = await Review.findByIdAndDelete(id);
 
     res.json({
         success: true,
-        message: `Movie with ${id} has been deleted`
+        message: `Review has been deleted`
     })
 }
 
-// module.exports = getMovies;
