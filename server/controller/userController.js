@@ -21,7 +21,7 @@ export const createUser = async (req, res) => {
     //     })
     // }
 
-    const existingUser = await User.find({ email });
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
         return res.send({
             success: false,

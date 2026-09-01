@@ -1,9 +1,11 @@
 import Movie from '../models/movieModel.js'
 
-export const getMovies = (req, res) => {
+export const getAllMovies = async (req,res) => {
+    const movies = await Movie.find({});
     res.json({
-        success: true,
-        message: 'Movies fetched successfully'
+        success:true,
+        message: 'Movies Fetched Successfully',
+        result:movies
     })
 }
 
@@ -25,12 +27,19 @@ export const getAMovieWithId = async (req, res) => {
 }
 
 export const createMovie = async (req, res) => {
-    const { name, rating, description } = req.body;
-    //code to send in database
+    const { name, description, genre, posterUrl } = req.body;
+    if(!name){
+        return res.json({
+            success:false,
+            message: 'A movie should have a title.'
+        })
+    }
+    //code to create movie in database
     const movie = await Movie.create({
         title: name,
-        rating,
-        description
+      description,
+        genre,
+        posterUrl
     })
     res.json({
         success: true,

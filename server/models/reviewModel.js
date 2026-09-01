@@ -8,16 +8,15 @@ const reviewSchema = new mongoose.Schema(
         },
         rating:{
             type: Number,
-            required:true
         },
         user:{
             type:mongoose.Schema.Types.ObjectId,
-            ref:'users',
+            ref:'User',
             required:true,
         },
         movie:{
             type:mongoose.Schema.Types.ObjectId,
-            ref:'movies',
+            ref:'Movie',
             required:true
         }
     }, { timestamps: true }
