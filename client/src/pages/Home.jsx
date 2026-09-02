@@ -3,42 +3,20 @@ import Footer from "../components/Footer.jsx"
 import MovieCard from "../components/MovieCard.jsx"
 import NavigationBar from "../components/NavigationBar.jsx"
 import { Link } from "react-router-dom";
+import api from "../../api/api.jsx";
 
 function Home() {
   const [movies, setMovies] = useState([]);
-  const [count, setCount] = useState(500);
   const [search, setSearch] = useState('');
 
-  const options = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNmU4MzdiMDA5NDhkOGEyMjIzMTZhNGZlMzA1MmM4ZCIsIm5iZiI6MTc4MzM4OTc1OC45MjYsInN1YiI6IjZhNGM1ZTNlZDIzMmFlNDk0NGU3NDRiYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.xjulLFuF3a4NC6rYQ8vyC7HyMi2wwR0r1cqf8_fWiys"
-    }
-  };
 
   const getMovies = async () => {
-    const res = await fetch("https://api.themoviedb.org/3/movie/popular",
-      options);
-    const data = await res.json();
-    console.log(data.results);
-    setMovies(data.results);
+    const res = await api.get('/movie/getAll');
+    setMovies(res.data.result);
+    console.log(res.data.result);
   }
 
-  const filterMovies = () => {
-    console.log("hello");
-    const result = movies.filter(movie => movie.vote_average >= 7);
-    setMovies(result);
-  }
 
-  const findMovie = async () => {
-    if (search.trim() === "") {
-      return;
-    }
-    const res = await fetch(`https://api.themoviedb.org/3/search/movie?query=${search}`, options);
-    const data = await res.json();
-    setMovies(data.results);
-  }
 
   useEffect(() => {
     getMovies();
@@ -61,12 +39,11 @@ function Home() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-4">
           {movies.length > 0 ? movies.map(movie => (
-            <Link to={`/movie/${movie.id}`}>
+            <Link to={`/movie/${movie._id}`}>
               <MovieCard
                 name={movie.title}
-                rating={movie.vote_average}
-                description={movie.overview}
-                link={movie.poster_path}
+                description={movie.description}
+                link={movie.posterUrl}
               />
             </Link>
           ))

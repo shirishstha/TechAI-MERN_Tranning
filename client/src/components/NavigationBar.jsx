@@ -15,7 +15,10 @@ const NavigationBar = () => {
                 <button >Search</button>
             </div>
             <nav className='flex justify-center gap-12 '>
-                <span className='hover:underline underline-offset-5 hover:text-rose-700'><Link to="/about">Home</Link> </span>
+                <span className='hover:underline underline-offset-5 hover:text-rose-700'><Link to="/movie/create">Add Movie</Link> </span>
+                <span className='hover:underline underline-offset-5 hover:text-rose-700'><Link to="/">Home</Link> </span>
+                <span className='hover:underline underline-offset-5 hover:text-rose-700'><Link to="/user/register">Register</Link> </span>
+                <span className='hover:underline underline-offset-5 hover:text-rose-700'><Link to="/user/login">Login</Link> </span>
                 <span className='hover:underline underline-offset-5 hover:text-rose-700'>About Us</span>
                 <span className='hover:underline underline-offset-5 hover:text-rose-700'>Trending</span>
             </nav>
